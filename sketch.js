@@ -4,6 +4,8 @@ let noiseParticles = [];
 let ancOn = false;
 let ancAmount = 0;
 
+let ancButton;
+
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
 
@@ -17,6 +19,20 @@ function setup() {
 
   createHeadphones();
   createNoiseParticles();
+
+  ancButton = createButton("ANC OFF");
+  ancButton.position(windowWidth / 2 - 65, windowHeight - 80);
+  ancButton.style("padding", "14px 26px");
+  ancButton.style("border-radius", "999px");
+  ancButton.style("border", "1px solid rgba(255, 255, 255, 0.45)");
+  ancButton.style("background", "rgba(255, 255, 255, 0.08)");
+  ancButton.style("color", "white");
+  ancButton.style("font-size", "16px");
+  ancButton.style("font-weight", "600");
+  ancButton.style("letter-spacing", "0.5px");
+  ancButton.style("cursor", "pointer");
+  ancButton.style("z-index", "10");
+  ancButton.mousePressed(toggleANC);
 
   // console.log("total points:", headphonePoints.length);
 }
@@ -200,15 +216,33 @@ function drawNoiseParticles() {
   }
 }
 
+function toggleANC() {
+  ancOn = !ancOn;
+
+  if (ancOn) {
+    ancButton.html("ANC ON");
+    ancButton.style("background", "rgb(255, 92, 186)");
+    ancButton.style("border", "1px solid rgb(255, 92, 186)");
+    ancButton.style("color", "white");
+  } else {
+    ancButton.html("ANC OFF");
+    ancButton.style("background", "rgba(255, 255, 255, 0.08)");
+    ancButton.style("border", "1px solid rgba(255, 255, 255, 0.45)");
+    ancButton.style("color", "white");
+  }
+
+  console.log("ANC toggled: ", ancOn);
+}
+
 // KEYBOARD
 function keyPressed() {
   if (key === "n" || key === "N") {
-    ancOn = !ancOn;
-    console.log("ANC toggled: ", ancOn); // check if triggered
+    toggleANC();
   }
 }
 
 // RESIZE
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  ancButton.position(windowWidth / 2 - 65, windowHeight - 80);
 }
